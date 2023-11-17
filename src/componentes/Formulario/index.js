@@ -6,27 +6,23 @@ import { useState } from 'react'
 
 const Formulario = (props) => {
 
-    const times = [
-        'Programação',
-        'Front-End',
-        'Data Science',
-        'Devops',
-        'UX e Design',
-        'Mobile',
-        'Inovação e Gestão',
-    ]
-
     const [nome,setNome] = useState('')
     const [cargo, setCargo] = useState('')
     const [time, setTime] = useState('')
+    const [imagem, setImagem] = useState('')
 
     const aoSalvar = (evento) => {
         evento.preventDefault()
         props.aoColaboradorCadastrado({
             nome,
             cargo,
-            time
+            time,
+            imagem
         })
+        setNome('')
+        setCargo('')
+        setImagem('')
+        setTime('')
     }
 
     return (
@@ -46,11 +42,17 @@ const Formulario = (props) => {
                     valor={cargo}
                     aoAlterado={ valor => setCargo(valor) }
                 />
+                <CampoTexto 
+                    label="Imagem" 
+                    placeholder="Digite o caminho da sua imagem"
+                    valor={imagem}
+                    aoAlterado={ valor => setImagem(valor) }
+                />
                 <ListaSuspensa 
                     label="Time" 
-                    itens={times}
-                    valor = {time}
-                    aoAlterado={valor => setTime(valor)}
+                    itens={ props.times }
+                    valor = { time }
+                    aoAlterado={ valor => setTime(valor) }
                 />
                 <Botao>
                     Criar Card
