@@ -1,8 +1,9 @@
 import './Formulario.css'
-import CampoTexto from '../CampoTexto'
+import Campo from '../Campo'
 import ListaSuspensa from '../ListaSuspensa'
 import Botao from '../Botao'
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 const Formulario = (props) => {
 
@@ -11,13 +12,18 @@ const Formulario = (props) => {
     const [time, setTime] = useState('')
     const [imagem, setImagem] = useState('')
 
+    const [nomeTime, setNomeTime] = useState('')
+    const [corTime, setCorTime] = useState('')
+    
     const aoSalvar = (evento) => {
         evento.preventDefault()
         props.aoColaboradorCadastrado({
+            id: uuidv4(),
             nome,
             cargo,
             time,
-            imagem
+            imagem,
+            favorito : false
         })
         setNome('')
         setCargo('')
@@ -29,20 +35,20 @@ const Formulario = (props) => {
         <section className="formulario">
             <form onSubmit={aoSalvar}>
                 <h2>Preencha os dados para criar o card do colaborador</h2>
-                <CampoTexto 
+                <Campo
                     obrigatorio={false} 
                     label="Nome" 
                     placeholder="Digite seu nome"
                     valor={nome}
                     aoAlterado={ valor => setNome(valor) }
                 />
-                <CampoTexto 
+                <Campo
                     label="Cargo" 
                     placeholder="Digite seu cargo"
                     valor={cargo}
                     aoAlterado={ valor => setCargo(valor) }
                 />
-                <CampoTexto 
+                <Campo 
                     label="Imagem" 
                     placeholder="Digite o caminho da sua imagem"
                     valor={imagem}
@@ -56,6 +62,29 @@ const Formulario = (props) => {
                 />
                 <Botao>
                     Criar Card
+                </Botao>
+            </form>
+            <form onSubmit={(evento) => {
+                evento.preventDefault()
+                props.cadastrarTime({nome:nomeTime, corPrimaria: corTime})
+            }}>
+                <h2>Preencha os dados para criar um novo time</h2>
+                <Campo 
+                    obrigatorio={false} 
+                    label="Nome" 
+                    placeholder="Digite o nome do time"
+                    valor={nomeTime}
+                    aoAlterado={ valor => setNomeTime(valor) }
+                />
+                <Campo
+                    label="Cor" 
+                    placeholder="Digite a cor do time"
+                    valor={corTime}
+                    type="color"
+                    aoAlterado={ valor => setCorTime(valor) }
+                />
+                <Botao>
+                    Criar um novo time
                 </Botao>
             </form>
         </section>
